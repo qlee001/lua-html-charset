@@ -21,6 +21,10 @@ local function get_charset_from_header()
 end
 
 local function get_charset_from_html(html)
+    if type(html) ~= "string" then
+        return nil
+    end
+
     local res, err = re_match(html, '<meta\\s+http-equiv="Content-Type"\\s+content="[\\w/]+;\\s*charset=[\\s]*([^\\s"]+)"', 'si')
     if res then
         local charset = str_lower(res[1])
@@ -33,7 +37,10 @@ end
 
 --Without Nginx_lua api
 local function get_charset_from_html2(html)
-    --local res, err = str_match(html, '<meta%s+http-equiv="Content-Type"%s+content="[%w/]+;%s*charset=[%s]*([^%s"]+)"')
+    if type(html) ~= "string" then
+        return nil
+    end
+
     local res, err = str_match(html, '<meta%s+http%-equiv="Content%-Type"%s+content="[%w/]+;%s*charset=[%s]*([^%s"]+)"')
     if res then
         local charset = str_lower(res)
