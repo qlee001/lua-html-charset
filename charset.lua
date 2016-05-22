@@ -25,7 +25,11 @@ local function get_charset_from_html(html)
         return nil
     end
 
-    local res, err = re_match(html, '<meta\\s+http-equiv="Content-Type"\\s+content="[\\w/]+;\\s*charset=[\\s]*([^\\s"]+)"', 'si')
+    local res = re_match(html, '<meta charset="([^\\s]+)"', 'ios')
+    if not res then
+        res = re_match(html, '<meta\\s+http-equiv="Content-Type"\\s+content="[\\w/]+;\\s*charset=[\\s]*([^\\s"]+)"', 'ios')
+    end
+
     if res then
         local charset = str_lower(res[1])
         return charset
@@ -41,7 +45,11 @@ local function get_charset_from_html2(html)
         return nil
     end
 
-    local res, err = str_match(html, '<meta%s+http%-equiv="Content%-Type"%s+content="[%w/]+;%s*charset=[%s]*([^%s"]+)"')
+    local res = str_match(html, '<meta charset="([^%s"]+)"')
+    if not res then
+        res = str_match(html, '<meta%s+http%-equiv="Content%-Type"%s+content="[%w/]+;%s*charset=[%s]*([^%s"]+)"')
+    end
+
     if res then
         local charset = str_lower(res)
         return charset
